@@ -1,4 +1,4 @@
-Feature: test
+Feature: Tuple
 
   Scenario: A tuple with w=1.0 is a point
     Given Tuple x=4.3, y=-4.2, z=3.1, w=1.0
@@ -110,4 +110,43 @@ Feature: test
     And Second vector x=2.0, y=3.0, z=4.0
     Then Cross vectors -1.0, 2.0, -1.0
     And Reverse cross vectors 1.0, -2.0, 1.0
+
+  Scenario: Colors are red, green, blue Tuples
+    Given Color red=-0.5 green=0.4 blue=1.7
+    Then Red is -0.5
+    And Green is 0.4
+    And Blue is 1.7
+
+  Scenario: Two colors addition
+    Given Color red=0.9 green=0.6 blue=0.75
+    And Second color red=0.7 green=0.1 blue=0.25
+    Then Adding colors equals 1.6 0.7 1.0
+
+  Scenario: Two colors give subtraction
+    Given Color red=0.9 green=0.6 blue=0.75
+    And Second color red=0.7 green=0.1 blue=0.25
+    Then Subtracting colors equals 0.2 0.5 0.5
+
+  Scenario: Multiply a color by scalar
+    Given Color red=0.2 green=0.3 blue=0.4
+    Then Multiply tuple by 2.0 equals 0.4, 0.6, 0.8, 0.0
+
+  Scenario: Multiply a color on color
+    Given Color red=1.0 green=0.2 blue=0.4
+    And Second color red=0.9 green=1.0 blue=0.1
+    Then Multiply tuples equals 0.9, 0.2, 0.040000003, 0.0
+
+  @aaa
+  Scenario: Reflecting a vector approaching at 45°
+    Given Vector x=1.0, y=-1.0, z=0.0
+    And Second vector x=0.0, y=1.0, z=0.0
+    When Reflect vectors
+    Then Reflected vector 1.0 1.0 0.0
+
+  @aaa
+  Scenario: Reflecting a vector off a slanted surface
+    Given Vector x=0.0, y=-1.0, z=0.0
+    And Second vector x=0.70711, y=0.70711, z=0.0
+    When Reflect vectors
+    Then Reflected vector 1.0 0.0 0.0
 
