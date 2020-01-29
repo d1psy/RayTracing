@@ -12,6 +12,7 @@ public class Computation {
     private Tuple point;
     private Tuple eyeVector;
     private Tuple normalVector;
+    private Tuple overPoint;
     private boolean inside;
 
     public Computation() {
@@ -34,6 +35,7 @@ public class Computation {
         } else {
             inside = false;
         }
+        overPoint = point.add(normalVector.multiply(0.00001));
     }
 
     public double getTime() {
@@ -82,5 +84,13 @@ public class Computation {
 
     public void setInside(boolean inside) {
         this.inside = inside;
+    }
+
+    public Tuple getOverPoint() {
+        return overPoint;
+    }
+
+    public void setOverPoint(Tuple overPoint) {
+        this.overPoint = overPoint;
     }
 }

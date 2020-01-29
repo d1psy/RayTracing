@@ -37,7 +37,7 @@ public class World {
     }
 
     public Tuple shadeHit(Computation computation) {
-        return computation.getObject().getMaterial().lighting(getLight(), computation.getPoint(), computation.getEyeVector(), computation.getNormalVector());
+        return computation.getObject().getMaterial().lighting(getLight(), computation.getPoint(), computation.getEyeVector(), computation.getNormalVector(), isShadowed(computation.getOverPoint()));
     }
 
     public Tuple colorAt(Ray ray) {
@@ -48,6 +48,16 @@ public class World {
         }
         Computation computation = new Computation(intersection, ray);
         return shadeHit(computation);
+    }
+
+    public boolean isShadowed(Tuple point) {
+        Tuple v = getLight().getPosition().subtract(point);
+        double distance = v.magnitude();
+        Tuple direction = v.normalize();
+        Ray ray = new Ray(point, direction);
+        List<Intersection> objects = getWorldIntersections(ray);
+        Intersection intersection = IntersectionCollection.hit(objects);
+        return intersection != null && intersection.getTime() < distance;
     }
 
     public Light getLight() {

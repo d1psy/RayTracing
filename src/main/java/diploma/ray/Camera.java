@@ -9,6 +9,8 @@ import diploma.geometry.Tuple;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.function.BiConsumer;
+import java.util.stream.IntStream;
 
 public class Camera {
 
@@ -23,7 +25,7 @@ public class Camera {
     public Camera(int hsize, int vsize, double fov) {
         this.hsize = hsize;
         this.vsize = vsize;
-        this.fov = Math.PI/fov;
+        this.fov = Math.PI / fov;
         this.pixelSize = calculatePixelSize();
         transform = Creator.createIdentityMatrix();
     }
@@ -41,27 +43,50 @@ public class Camera {
 
     public Canvas render(World world) {
         Canvas image = new Canvas(getHsize(), getVsize());
-        for (int i = 0; i < getVsize() - 1; i++) {
-            for (int j = 0; j < getHsize() - 1; j++) {
-                Ray ray = rayForPixel(j, i);
-                Tuple color = world.colorAt(ray);
-                image.writeToPixel(j, i, color);
-            }
-        }
+        forEachIndex(
+                (x, y) -> {
+                    Ray ray = rayForPixel(y, x);
+                    Tuple color = world.colorAt(ray);
+                    image.writeToPixel(y, x, color);
+                });
+//        for (int i = 0; i < getVsize() - 1; i++) {
+//            for (int j = 0; j < getHsize() - 1; j++) {
+//                long start = System.currentTimeMillis();
+//                Ray ray = rayForPixel(j, i);
+//                Tuple color = world.colorAt(ray);
+//                image.writeToPixel(j, i, color);
+//                long end = System.currentTimeMillis() - start;
+//                System.out.println("Render pixel - " + end/1000F);
+//            }
+//        }
         return image;
     }
 
+
+    private IntStream xIndexStream() {
+        return IntStream.range(0, vsize);
+    }
+
+    private IntStream yIndexStream() {
+        return IntStream.range(0, hsize);
+    }
+
+    // Calls callback for each pixel (x,y).
+    public void forEachIndex(BiConsumer<Integer, Integer> callback) {
+        yIndexStream().parallel().forEach(y -> xIndexStream().parallel().forEach(x -> callback.accept(x, y)));
+    }
+
     private double calculatePixelSize() {
-        double halfView = Math.tan(fov/2);
-        double aspect = (double)hsize/(double)vsize;
+        double halfView = Math.tan(fov / 2);
+        double aspect = (double) hsize / (double) vsize;
         if (aspect >= 1) {
             halfWidth = halfView;
-            halfHeight = format(halfView/aspect);
+            halfHeight = format(halfView / aspect);
         } else {
-            halfWidth = format(halfView*aspect);
+            halfWidth = format(halfView * aspect);
             halfHeight = halfView;
         }
-        return format((halfWidth*2)/hsize);
+        return format((halfWidth * 2) / hsize);
     }
 
     private double format(double value) {

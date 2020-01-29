@@ -20,10 +20,13 @@ public class Material {
         shininess = 200.0;
     }
 
-    public Tuple lighting(Light light, Tuple position, Tuple eyeVector, Tuple normalVector) {
+    public Tuple lighting(Light light, Tuple position, Tuple eyeVector, Tuple normalVector, boolean inShadow) {
         Tuple effectiveColor = getColor().multiplyTuple(light.getIntensity());
         Tuple lightVector = light.getPosition().subtract(position).normalize();
         Tuple ambient = effectiveColor.multiply(getAmbient());
+        if (inShadow) {
+            return ambient;
+        }
         double dot = lightVector.dotProduct(normalVector, "#.#");
         Tuple diffuse;
         Tuple specular;

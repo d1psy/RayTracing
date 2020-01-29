@@ -47,6 +47,7 @@ Feature: World
     And Computation inside true
     And Computations normal vector is 0 0 -1
 
+  @aaa
   Scenario: Shading an intersection
     Given Ray in world point 0 0 -5 vector 0 0 1
     And Shape is first object
@@ -55,6 +56,7 @@ Feature: World
     And Shade hit
     Then Computation color 0.38066 0.47583 0.2855
 
+  @aaa
   Scenario: Shading an intersection from the inside
     Given Light point 0 0.25 0 and color 1 1 1
     And Ray in world point 0 0 0 vector 0 0 1
@@ -71,11 +73,13 @@ Feature: World
     When Color at
     Then World color is 0 0 0
 
+  @aaa
   Scenario: The color when a ray hits
     Given Ray in world point 0 0 -5 vector 0 0 1
     When Color at
     Then World color is 0.38066 0.47583 0.2855
 
+  @aaa
   Scenario: The color with an intersection behind the ray
     Given Outer is first in world
     And Outer material ambient is 1
@@ -84,3 +88,13 @@ Feature: World
     And Ray in world point 0 0 0.75 vector 0 0 -1
     When Color at
     Then Color is inner
+
+  @aaa
+  Scenario: The shadow when an object is between the point and the light
+    Given Point in world 10 -10 10
+    Then Is shadowed
+
+  @aaa
+  Scenario: There is no shadow when an object is behind the light
+    Given Point in world -20 20 -20
+    Then Is not shadowed

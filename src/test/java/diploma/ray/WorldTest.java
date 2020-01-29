@@ -35,6 +35,7 @@ public class WorldTest {
     private List<Intersection> intersectionList;
     private Tuple shadeHit;
     private Tuple colorAt;
+    private Tuple pointInWorld;
 
     @Given("Create world")
     public void createWorld() {
@@ -110,6 +111,11 @@ public class WorldTest {
     @Given("Inner material ambient is {double}")
     public void setInnerMaterial(double ambient) {
         inner.getMaterial().setAmbient(ambient);
+    }
+
+    @Given("Point in world {double} {double} {double}")
+    public void createPointInWorld(double x, double y, double z) {
+        pointInWorld = new Point(x, y, z);
     }
 
     @When("Add light and spheres")
@@ -213,5 +219,15 @@ public class WorldTest {
     @Then ("Color is inner")
     public void colorIsInner() {
         assertEquals(inner.getMaterial().getColor(), colorAt);
+    }
+
+    @Then("Is shadowed")
+    public void isShadowed() {
+        assertTrue(world.isShadowed(pointInWorld));
+    }
+
+    @Then("Is not shadowed")
+    public void isNotShadowed() {
+        assertFalse(world.isShadowed(pointInWorld));
     }
 }

@@ -17,6 +17,7 @@ Feature: Lights
     And Material specular is 0.9
     And Material shininess is 200.0
 
+  @aaa
   Scenario: Lighting with the eye between the light and the surface
     Given Eye vector 0.0 0.0 -1.0
     And Normal vector 0.0 0.0 -1.0
@@ -24,6 +25,7 @@ Feature: Lights
     When Create lighting result
     Then Result is color 1.9 1.9 1.9
 
+  @aaa
   Scenario: Lighting with the eye between light and surface, eye offset 45°
     Given Eye vector 0.0 0.70711 -0.70711
     And Normal vector 0.0 0.0 -1.0
@@ -31,6 +33,7 @@ Feature: Lights
     When Create lighting result
     Then Result is color 1.0 1.0 1.0
 
+  @aaa
   Scenario: Lighting with eye opposite surface, light offset 45°
     Given Eye vector 0.0 0.0 -1.0
     And Normal vector 0.0 0.0 -1.0
@@ -38,6 +41,7 @@ Feature: Lights
     When Create lighting result
     Then Result is color 0.7 0.7 0.7
 
+  @aaa
   Scenario: Lighting with eye in the path of the reflection vector
     Given Eye vector 0.0 -0.70711 -0.70711
     And Normal vector 0.0 0.0 -1.0
@@ -45,12 +49,23 @@ Feature: Lights
     When Create lighting result
     Then Result is color 1.6 1.6 1.6
 
+  @aaa
   Scenario: Lighting with the light behind the surface
     Given Eye vector 0.0 0.0 -1.0
     And Normal vector 0.0 0.0 -1.0
     And Point light point 0.0 0.0 10.0 color 1.0 1.0 1.0
     When Create lighting result
     Then Result is color 0.1 0.1 0.1
+
+  @aaa
+  Scenario: Lighting with the surface in shadow
+    Given Eye vector 0.0 0.0 -1.0
+    And Normal vector 0.0 0.0 -1.0
+    And Point light point 0.0 0.0 -10.0 color 1.0 1.0 1.0
+    And Is in shadow
+    When Create lighting result
+    Then Result is color 0.1 0.1 0.1
+
 
 
 

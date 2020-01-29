@@ -77,7 +77,10 @@ public class Main {
         Tuple from = new Point(0, 1.5, -5);
         Matrix transform = from.viewTransform(new Point(0.2, 1, -2), new Vector(0, 1, 0));
         camera.setTransform(transform);
+        long start = System.currentTimeMillis();
         Canvas image = camera.render(world);
+        long end = System.currentTimeMillis() - start;
+        System.out.println("Time to render - " + end/1000F);
 
         File fnew = new File("test.ppm");
         FileWriter f2;

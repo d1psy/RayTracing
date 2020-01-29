@@ -21,6 +21,7 @@ public class LightsTest {
     private Tuple eyeVector;
     private Tuple normalVector;
     private Tuple result;
+    private boolean inShadow;
 
     @Given("Intensity {double} {double} {double}")
     public void createIntensity(double red, double green, double blue) {
@@ -53,6 +54,12 @@ public class LightsTest {
         Tuple color = new Color(red, green, blue);
         pointLight = new Light(color, point);
     }
+
+    @Given("Is in shadow")
+    public void setInShadow() {
+        inShadow = true;
+    }
+
     @When("Create light")
     public void createLight() {
         light = new Light(intensity, position);
@@ -60,7 +67,7 @@ public class LightsTest {
 
     @When("Create lighting result")
     public void createLightingResult() {
-        result = material.lighting(pointLight, position, eyeVector, normalVector);
+        result = material.lighting(pointLight, position, eyeVector, normalVector, inShadow);
     }
 
     @Then("Intensity is {double} {double} {double}")

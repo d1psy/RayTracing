@@ -116,7 +116,6 @@ public class Matrix {
     }
 
     public Matrix multiply(Matrix matrix) {
-
         double[][] result = new double[getData().length][matrix.getData()[0].length];
         for (int row = 0; row < result.length; row++) {
             for (int col = 0; col < result[row].length; col++) {
