@@ -1,9 +1,6 @@
 package diploma.geometry;
 
 import diploma.Creator;
-import diploma.math.GeometryObjectMath;
-import diploma.math.MatrixMath;
-import diploma.math.RayMath;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -21,17 +18,17 @@ public class SphereTest {
         sphere = new Sphere(id);
     }
 
-    @Given("Set transform translation {float} {float} {float}")
-    public void setTranslation(float x, float y, float z) {
+    @Given("Set transform translation {double} {double} {double}")
+    public void setTranslation(double x, double y, double z) {
         transform = Creator.createTranslationMatrix(x, y, z);
         sphere.setTransformation(transform);
     }
 
-    @Given("Multiply scaling {float} {float} {float} by rotation {float}")
-    public void multiplyScalingByRotation(float x, float y, float z, float r) {
+    @Given("Multiply scaling {double} {double} {double} by rotation {double}")
+    public void multiplyScalingByRotation(double x, double y, double z, double r) {
         Matrix rotation = Creator.zRotationMatrix(r);
         Matrix scaling = Creator.createScalingMatrix(x, y, z);
-        transform = MatrixMath.multiply(scaling, rotation);
+        transform = scaling.multiply(rotation);
     }
 
     @Given("Set transform of existing")
@@ -39,20 +36,20 @@ public class SphereTest {
         sphere.setTransformation(transform);
     }
 
-    @When("Normal sphere point {float} {float} {float}")
-    public void createNormalSphere(float x, float y, float z) {
+    @When("Normal sphere point {double} {double} {double}")
+    public void createNormalSphere(double x, double y, double z) {
         Tuple point = new Point(x, y, z);
-        normal = GeometryObjectMath.normalAt(sphere, point);
+        normal = sphere.normalAt(point);
     }
 
-    @Then("Normal gives vector {float} {float} {float}")
-    public void normalGivesVector(float x, float y, float z) {
+    @Then("Normal gives vector {double} {double} {double}")
+    public void normalGivesVector(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
         assertEquals(expected, normal);
     }
 
     @Then("Normalize normal gives normal")
     public void normalizeNormal() {
-        assertEquals(normal, RayMath.normalize(normal));
+        assertEquals(normal, normal.normalize());
     }
 }

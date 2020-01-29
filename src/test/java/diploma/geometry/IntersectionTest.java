@@ -5,6 +5,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -15,7 +18,7 @@ public class IntersectionTest {
     private Intersection secondIntersection;
     private Intersection thirdIntersection;
     private Intersection forthIntersection;
-    private IntersectionCollection intersections;
+    private List<Intersection> intersections;
     private Intersection hit;
 
     @Given("Create intersection sphere {int}")
@@ -23,43 +26,49 @@ public class IntersectionTest {
         sphere = new Sphere(id);
     }
 
-    @When("Intersection {float} sphere")
-    public void createSphereIntersection(float time) {
+    @When("Intersection {double} sphere")
+    public void createSphereIntersection(double time) {
         intersection = new Intersection(time, sphere);
     }
 
-    @When("Second intersection {float} sphere")
-    public void createSecondSphereIntersection(float time) {
+    @When("Second intersection {double} sphere")
+    public void createSecondSphereIntersection(double time) {
         secondIntersection = new Intersection(time, sphere);
     }
 
-    @When("Third intersection {float} sphere")
-    public void createThirdSphereIntersection(float time) {
+    @When("Third intersection {double} sphere")
+    public void createThirdSphereIntersection(double time) {
         thirdIntersection = new Intersection(time, sphere);
     }
 
-    @When("Forth intersection {float} sphere")
-    public void createForthSphereIntersection(float time) {
+    @When("Forth intersection {double} sphere")
+    public void createForthSphereIntersection(double time) {
         forthIntersection = new Intersection(time, sphere);
     }
 
     @When("List from two intersections")
     public void createIntersectionList() {
-        intersections = new IntersectionCollection(intersection, secondIntersection);
+        intersections = new ArrayList<>();
+        intersections.add(intersection);
+        intersections.add(secondIntersection);
     }
 
     @When("List from four intersections")
     public void createIntersectionListFromFour() {
-        intersections = new IntersectionCollection(intersection, secondIntersection, thirdIntersection, forthIntersection);
+        intersections = new ArrayList<>();
+        intersections.add(intersection);
+        intersections.add(secondIntersection);
+        intersections.add(thirdIntersection);
+        intersections.add(forthIntersection);
     }
 
     @When("Hit intersections list")
     public void createHitOfIntersections() {
-        hit = intersections.hit();
+        hit = IntersectionCollection.hit(intersections);
     }
 
-    @Then("Intersection time {float}")
-    public void intersectionTimeEquals(float expected) {
+    @Then("Intersection time {double}")
+    public void intersectionTimeEquals(double expected) {
         assertEquals(expected, intersection.getTime());
     }
 
@@ -70,17 +79,17 @@ public class IntersectionTest {
 
     @Then("List size is {int}")
     public void compareListSize(int expected) {
-        assertEquals(expected, intersections.getIntersections().size());
+        assertEquals(expected, intersections.size());
     }
 
-    @Then("List time {int} is {float}")
-    public void listTimeIs(int pointer, float expected) {
-        assertEquals(expected, intersections.getIntersections().get(pointer).getTime());
+    @Then("List time {int} is {double}")
+    public void listTimeIs(int pointer, double expected) {
+        assertEquals(expected, intersections.get(pointer).getTime());
     }
 
     @Then("Expected intersection {int}")
     public void expectedIntersection(int pointer) {
-        assertEquals(intersections.getIntersections().get(pointer), hit);
+        assertEquals(intersections.get(pointer), hit);
     }
 
     @Then("Expected intersection is nothing")

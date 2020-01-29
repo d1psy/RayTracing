@@ -5,7 +5,7 @@ import diploma.geometry.Matrix;
 public class Creator {
 
     public static Matrix createIdentityMatrix() {
-        float[][] data = new float[4][4];
+        double[][] data = new double[4][4];
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 if (i == j) {
@@ -18,7 +18,7 @@ public class Creator {
         return new Matrix(data);
     }
 
-    public static Matrix createTranslationMatrix(float x, float y, float z) {
+    public static Matrix createTranslationMatrix(double x, double y, double z) {
         Matrix result = createIdentityMatrix();
         result.getData()[0][3] = x;
         result.getData()[1][3] = y;
@@ -26,7 +26,7 @@ public class Creator {
         return result;
     }
 
-    public static Matrix createScalingMatrix(float x, float y, float z) {
+    public static Matrix createScalingMatrix(double x, double y, double z) {
         Matrix result = createIdentityMatrix();
         result.getData()[0][0] = x;
         result.getData()[1][1] = y;
@@ -34,7 +34,7 @@ public class Creator {
         return result;
     }
 
-    public static Matrix createShearingMatrix(float x1, float x2, float y1, float y2, float z1, float z2) {
+    public static Matrix createShearingMatrix(double x1, double x2, double y1, double y2, double z1, double z2) {
         Matrix result = createIdentityMatrix();
         result.getData()[0][1] = x1;
         result.getData()[0][2] = x2;
@@ -45,30 +45,30 @@ public class Creator {
         return result;
     }
 
-    public static Matrix xRotationMatrix(float r) {
+    public static Matrix xRotationMatrix(double r) {
         Matrix result = createIdentityMatrix();
-        result.getData()[1][1] = (float) Math.cos(Math.PI/r);
-        result.getData()[1][2] = -(float) Math.sin(Math.PI/r);
-        result.getData()[2][1] = (float) Math.sin(Math.PI/r);
-        result.getData()[2][2] = (float) Math.cos(Math.PI/r);
+        result.getData()[1][1] = Math.cos(Math.PI/r);
+        result.getData()[1][2] = -Math.sin(Math.PI/r);
+        result.getData()[2][1] = Math.sin(Math.PI/r);
+        result.getData()[2][2] = Math.cos(Math.PI/r);
         return result;
     }
 
-    public static Matrix yRotationMatrix(float r) {
+    public static Matrix yRotationMatrix(double r) {
         Matrix result = createIdentityMatrix();
-        result.getData()[0][0] = (float) Math.cos(Math.PI/r);
-        result.getData()[0][2] = (float) Math.sin(Math.PI/r);
-        result.getData()[2][0] = -(float) Math.sin(Math.PI/r);
-        result.getData()[2][2] = (float) Math.cos(Math.PI/r);
+        result.getData()[0][0] = Math.cos(Math.PI/r);
+        result.getData()[0][2] = Math.sin(Math.PI/r);
+        result.getData()[2][0] = -Math.sin(Math.PI/r);
+        result.getData()[2][2] = Math.cos(Math.PI/r);
         return result;
     }
 
-    public static Matrix zRotationMatrix(float r) {
+    public static Matrix zRotationMatrix(double r) {
         Matrix result = createIdentityMatrix();
-        result.getData()[0][0] = (float) Math.cos(Math.PI/r);
-        result.getData()[0][1] = -(float) Math.sin(Math.PI/r);
-        result.getData()[1][0] = (float) Math.sin(Math.PI/r);
-        result.getData()[1][1] = (float) Math.cos(Math.PI/r);
+        result.getData()[0][0] = Math.cos(Math.PI/r);
+        result.getData()[0][1] = -Math.sin(Math.PI/r);
+        result.getData()[1][0] = Math.sin(Math.PI/r);
+        result.getData()[1][1] = Math.cos(Math.PI/r);
         return result;
     }
 }

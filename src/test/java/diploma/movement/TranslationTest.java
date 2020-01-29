@@ -9,7 +9,6 @@ import diploma.geometry.Sphere;
 import diploma.geometry.Tuple;
 import diploma.geometry.Vector;
 import diploma.math.IntersectionCollection;
-import diploma.math.MatrixMath;
 import diploma.ray.Ray;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -34,59 +33,59 @@ public class TranslationTest {
     private List<Intersection> intersections;
     private Ray ray;
 
-    @Given("Translation {float} {float} {float}")
-    public void createTranslation(float x, float y, float z) {
+    @Given("Translation {double} {double} {double}")
+    public void createTranslation(double x, double y, double z) {
         firstTransform = Creator.createTranslationMatrix(x, y, z);
     }
 
-    @Given("Third translation {float} {float} {float}")
-    public void createThirdTranslation(float x, float y, float z) {
+    @Given("Third translation {double} {double} {double}")
+    public void createThirdTranslation(double x, double y, double z) {
         thirdTransform = Creator.createTranslationMatrix(x, y, z);
     }
 
-    @Given("Scaling {float} {float} {float}")
-    public void createScaling(float x, float y, float z) {
+    @Given("Scaling {double} {double} {double}")
+    public void createScaling(double x, double y, double z) {
         firstTransform = Creator.createScalingMatrix(x, y, z);
     }
 
-    @Given("Second scaling {float} {float} {float}")
-    public void createSecondScaling(float x, float y, float z) {
+    @Given("Second scaling {double} {double} {double}")
+    public void createSecondScaling(double x, double y, double z) {
         secondTransform = Creator.createScalingMatrix(x, y, z);
     }
 
-    @Given("Rotation by x pi by {float}")
-    public void createRotationByX(float r) {
+    @Given("Rotation by x pi by {double}")
+    public void createRotationByX(double r) {
         firstTransform = Creator.xRotationMatrix(r);
     }
 
-    @Given("Rotation by y pi by {float}")
-    public void createRotationByY(float r) {
+    @Given("Rotation by y pi by {double}")
+    public void createRotationByY(double r) {
         firstTransform = Creator.yRotationMatrix(r);
     }
 
-    @Given("Rotation by z pi by {float}")
-    public void createRotationByZ(float r) {
+    @Given("Rotation by z pi by {double}")
+    public void createRotationByZ(double r) {
         firstTransform = Creator.zRotationMatrix(r);
     }
 
-    @Given("Shearing {float} {float} {float} {float} {float} {float}")
-    public void createShearing(float x1, float x2, float y1, float y2, float z1, float z2) {
+    @Given("Shearing {double} {double} {double} {double} {double} {double}")
+    public void createShearing(double x1, double x2, double y1, double y2, double z1, double z2) {
         firstTransform = Creator.createShearingMatrix(x1, x2, y1, y2, z1, z2);
     }
 
-    @Given("Point {float} {float} {float}")
-    public void createPoint(float x, float y, float z) {
+    @Given("Point {double} {double} {double}")
+    public void createPoint(double x, double y, double z) {
         firstPoint = new Point(x, y, z);
     }
 
-    @Given("Vector {float} {float} {float}")
-    public void createVector(float x, float y, float z) {
+    @Given("Vector {double} {double} {double}")
+    public void createVector(double x, double y, double z) {
         vector = new Vector(x, y, z);
     }
 
     @Given("Inverse transform")
     public void inverseTranslation() {
-        firstTransform = MatrixMath.inverse(firstTransform);
+        firstTransform = firstTransform.inverse();
     }
 
     @Given("Create sphere for transform {int}")
@@ -94,8 +93,8 @@ public class TranslationTest {
         sphere = new Sphere(id);
     }
 
-    @Given("Create ray {float} {float} {float} {float} {float} {float}")
-    public void createRay(float oX, float oY, float oZ, float dX, float dY, float dZ) {
+    @Given("Create ray {double} {double} {double} {double} {double} {double}")
+    public void createRay(double oX, double oY, double oZ, double dX, double dY, double dZ) {
         Tuple origin = new Point(oX, oY, oZ);
         Tuple direction = new Vector(dX, dY, dZ);
         ray = new Ray(origin, direction);
@@ -103,22 +102,22 @@ public class TranslationTest {
 
     @When("Second point multiply")
     public void secondPointMultiply() {
-        secondPoint = MatrixMath.multiplyByTuple(firstTransform, firstPoint);
+        secondPoint = firstTransform.multiplyByTuple(firstPoint);
     }
 
     @When("Third point multiply")
     public void thirdPointMultiply() {
-        thirdPoint = MatrixMath.multiplyByTuple(secondTransform, secondPoint);
+        thirdPoint = secondTransform.multiplyByTuple(secondPoint);
     }
 
     @When("Forth point multiply")
     public void forthPointMultiply() {
-        forthPoint = MatrixMath.multiplyByTuple(thirdTransform, thirdPoint);
+        forthPoint = thirdTransform.multiplyByTuple(thirdPoint);
     }
 
     @When("Multiply three matrices")
     public void tripleMultiplication() {
-        resultOfMult = MatrixMath.multiply(MatrixMath.multiply(thirdTransform, secondTransform), firstTransform);
+        resultOfMult = thirdTransform.multiply(secondTransform).multiply(firstTransform);
     }
 
     @When("Set transformation for sphere")
@@ -128,48 +127,48 @@ public class TranslationTest {
 
     @When("Intersection ray sphere")
     public void setIntersections() {
-        intersections = IntersectionCollection.getIntersection(ray, sphere);
+        intersections = ray.getIntersection(sphere);
     }
 
-    @Then("Transforming a point gives {float} {float} {float}")
-    public void multiplyByPoint(float x, float y, float z) {
+    @Then("Transforming a point gives {double} {double} {double}")
+    public void multiplyByPoint(double x, double y, double z) {
         Point expected = new Point(x, y, z);
-        assertEquals(expected, MatrixMath.multiplyByTuple(firstTransform, firstPoint));
+        assertEquals(expected, firstTransform.multiplyByTuple(firstPoint));
     }
 
     @Then("Transforming a vector gives vector")
     public void multiplyByVector() {
-        assertEquals(vector, MatrixMath.multiplyByTuple(firstTransform, vector));
+        assertEquals(vector, firstTransform.multiplyByTuple(vector));
     }
 
-    @Then("Transforming a vector gives {float} {float} {float}")
-    public void multiplyScalingByVector(float x, float y, float z) {
+    @Then("Transforming a vector gives {double} {double} {double}")
+    public void multiplyScalingByVector(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
-        assertEquals(expected, MatrixMath.multiplyByTuple(firstTransform, vector));
+        assertEquals(expected, firstTransform.multiplyByTuple(vector));
     }
 
-    @Then("Second point {float} {float} {float}")
-    public void secondPointEquals(float x, float y, float z) {
+    @Then("Second point {double} {double} {double}")
+    public void secondPointEquals(double x, double y, double z) {
         Tuple expected = new Point(x, y, z);
         assertEquals(expected, secondPoint);
     }
 
-    @Then("Third point {float} {float} {float}")
-    public void thirdPointEquals(float x, float y, float z) {
+    @Then("Third point {double} {double} {double}")
+    public void thirdPointEquals(double x, double y, double z) {
         Tuple expected = new Point(x, y, z);
         assertEquals(expected, thirdPoint);
     }
 
-    @Then("Forth point {float} {float} {float}")
-    public void forthPointEquals(float x, float y, float z) {
+    @Then("Forth point {double} {double} {double}")
+    public void forthPointEquals(double x, double y, double z) {
         Tuple expected = new Point(x, y, z);
         assertEquals(expected, forthPoint);
     }
 
-    @Then("Three matrices multiplication on point {float} {float} {float}")
-    public void threeOnPoint(float x, float y, float z) {
+    @Then("Three matrices multiplication on point {double} {double} {double}")
+    public void threeOnPoint(double x, double y, double z) {
         Tuple expected = new Point(x, y, z);
-        assertEquals(expected, MatrixMath.multiplyByTuple(resultOfMult, firstPoint));
+        assertEquals(expected, resultOfMult.multiplyByTuple(firstPoint));
     }
 
     @Then("Transformed sphere equals identityMatrix")
@@ -177,8 +176,8 @@ public class TranslationTest {
         assertEquals(Creator.createIdentityMatrix(), sphere.getTransformation());
     }
 
-    @Then("Transformed sphere equals translation {float} {float} {float}")
-    public void transformedSphereIsTranslation(float x, float y, float z) {
+    @Then("Transformed sphere equals translation {double} {double} {double}")
+    public void transformedSphereIsTranslation(double x, double y, double z) {
         assertEquals(Creator.createTranslationMatrix(x, y, z), sphere.getTransformation());
     }
 
@@ -187,8 +186,8 @@ public class TranslationTest {
         assertEquals(expected, intersections.size());
     }
 
-    @Then("Intersections time {int} is {float}")
-    public void intersectionsTime(int pointer, float expected) {
+    @Then("Intersections time {int} is {double}")
+    public void intersectionsTime(int pointer, double expected) {
         assertEquals(expected, intersections.get(pointer).getTime());
     }
 }

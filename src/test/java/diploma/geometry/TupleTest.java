@@ -1,6 +1,5 @@
 package diploma.geometry;
 
-import diploma.math.RayMath;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,96 +12,96 @@ public class TupleTest {
     private Tuple secondTuple;
     private Tuple reflectedVector;
 
-    @Given("Tuple x={float}, y={float}, z={float}, w={float}")
-    public void createTuple(float x, float y, float z, float w) {
+    @Given("Tuple x={double}, y={double}, z={double}, w={double}")
+    public void createTuple(double x, double y, double z, double w) {
         tuple = new Tuple(x, y, z, w);
     }
 
-    @Given("Point x={float}, y={float}, z={float}")
-    public void createPoint(float x, float y, float z) {
+    @Given("Point x={double}, y={double}, z={double}")
+    public void createPoint(double x, double y, double z) {
         tuple = new Point(x, y, z);
     }
 
-    @Given("Vector x={float}, y={float}, z={float}")
-    public void createVector(float x, float y, float z) {
+    @Given("Vector x={double}, y={double}, z={double}")
+    public void createVector(double x, double y, double z) {
         tuple = new Vector(x, y, z);
     }
 
-    @Given("Color red={float} green={float} blue={float}")
-    public void createColor(float red, float green, float blue) {
+    @Given("Color red={double} green={double} blue={double}")
+    public void createColor(double red, double green, double blue) {
         tuple = new Color(red, green, blue);
     }
 
-    @Given("Second tuple x={float}, y={float}, z={float}, w={float}")
-    public void createSecondTuple(float x, float y, float z, float w) {
+    @Given("Second tuple x={double}, y={double}, z={double}, w={double}")
+    public void createSecondTuple(double x, double y, double z, double w) {
         secondTuple = new Tuple(x, y, z, w);
     }
 
-    @Given("Second point x={float}, y={float}, z={float}")
-    public void createSecondPoint(float x, float y, float z) {
+    @Given("Second point x={double}, y={double}, z={double}")
+    public void createSecondPoint(double x, double y, double z) {
         secondTuple = new Point(x, y, z);
     }
 
-    @Given("Second vector x={float}, y={float}, z={float}")
-    public void createSecondTuple(float x, float y, float z) {
+    @Given("Second vector x={double}, y={double}, z={double}")
+    public void createSecondTuple(double x, double y, double z) {
         secondTuple = new Vector(x, y, z);
     }
 
-    @Given("Second color red={float} green={float} blue={float}")
-    public void createSecondColor(float red, float green, float blue) {
+    @Given("Second color red={double} green={double} blue={double}")
+    public void createSecondColor(double red, double green, double blue) {
         secondTuple = new Color(red, green, blue);
     }
 
-    @Given("{word} axis={float}")
-    public void createTwoTuples(String type, float axis) {
+    @Given("{word} axis={double}")
+    public void createTwoTuples(String type, double axis) {
         if (type.equalsIgnoreCase("point")) {
-            tuple = new Tuple(axis, axis, axis, 1.0f);
+            tuple = new Tuple(axis, axis, axis, 1.0);
             secondTuple = new Point(axis, axis, axis);
         } else {
-            tuple = new Tuple(axis, axis, axis, 0.0f);
+            tuple = new Tuple(axis, axis, axis, 0.0);
             secondTuple = new Vector(axis, axis, axis);
         }
     }
 
     @When("Normalize")
     public void normalizeVector() {
-        tuple = RayMath.normalize(tuple);
+        tuple = tuple.normalize();
     }
 
     @When("Reflect vectors")
     public void reflectVectors() {
-        reflectedVector = RayMath.reflect(tuple, secondTuple);
+        reflectedVector = tuple.reflect(secondTuple);
     }
 
-    @Then("get x = {float}")
-    public void xIsSet(float x) {
+    @Then("get x = {double}")
+    public void xIsSet(double x) {
         assertEquals(tuple.getX(), x);
     }
 
-    @Then("get y = {float}")
-    public void yIsSet(float y) {
+    @Then("get y = {double}")
+    public void yIsSet(double y) {
         assertEquals(tuple.getY(), y);
     }
 
-    @Then("get z = {float}")
-    public void zIsSet(float z) {
+    @Then("get z = {double}")
+    public void zIsSet(double z) {
         assertEquals(tuple.getZ(), z);
     }
 
-    @Then("get w = {float}")
-    public void wIsSet(float w) {
+    @Then("get w = {double}")
+    public void wIsSet(double w) {
         assertEquals(tuple.getW(), w);
     }
 
     @Then("is a {word} {word}")
     public void pointOrVector(String type, String val) {
         boolean bool = Boolean.parseBoolean(val);
-        float value;
+        double value;
 
         if((type.equals("vector") && bool) || (type.equals("point") && !bool)) {
-            value = 0.0f;
+            value = 0.0;
         } else {
-            value = 1.0f;
+            value = 1.0;
         }
         assertEquals(tuple.getW(), value);
     }
@@ -112,17 +111,17 @@ public class TupleTest {
         assertEquals(tuple, secondTuple);
     }
 
-    @Then("combine tuples equals {float}, {float}, {float}, {float}")
-    public void combineAndCompareTuples(float x, float y, float z, float w) {
+    @Then("combine tuples equals {double}, {double}, {double}, {double}")
+    public void combineAndCompareTuples(double x, double y, double z, double w) {
         Tuple expected = new Tuple(x, y, z, w);
-        Tuple actual = RayMath.add(tuple, secondTuple);
+        Tuple actual = tuple.add(secondTuple);
         assertEquals(expected, actual);
     }
 
-    @Then("subtract equals {word} {float}, {float}, {float}")
-    public void subtractAndCompareTuples(String type, float x, float y, float z) {
+    @Then("subtract equals {word} {double}, {double}, {double}")
+    public void subtractAndCompareTuples(String type, double x, double y, double z) {
         Tuple expected;
-        Tuple actual = RayMath.subtract(tuple, secondTuple);
+        Tuple actual = tuple.subtract(secondTuple);
         if (type.equalsIgnoreCase("vector")) {
             expected = new Vector(x, y, z);
         } else {
@@ -131,98 +130,97 @@ public class TupleTest {
         assertEquals(expected, actual);
     }
 
-    @Then("Negate tuple x={float}, y={float}, z={float}, w={float}")
-    public void negateTuple(float x, float y, float z, float w) {
+    @Then("Negate tuple x={double}, y={double}, z={double}, w={double}")
+    public void negateTuple(double x, double y, double z, double w) {
         Tuple expected = new Tuple(x, y, z, w);
-        tuple.negate();
-        assertEquals(expected, tuple);
+        assertEquals(expected, tuple.negate());
     }
 
-    @Then("Multiply tuple by {float} equals {float}, {float}, {float}, {float}")
-    public void multiplyTuple(float mult, float x, float y, float z, float w) {
+    @Then("Multiply tuple by {double} equals {double}, {double}, {double}, {double}")
+    public void multiplyTuple(double mult, double x, double y, double z, double w) {
         Tuple expected = new Tuple(x, y, z, w);
-        Tuple actual = RayMath.multiply(tuple, mult);
+        Tuple actual = tuple.multiply(mult);
         assertEquals(expected, actual);
     }
 
-    @Then("Divide tuple by {float} equals {float}, {float}, {float}, {float}")
-    public void divideTuple(float mult, float x, float y, float z, float w) {
+    @Then("Divide tuple by {double} equals {double}, {double}, {double}, {double}")
+    public void divideTuple(double mult, double x, double y, double z, double w) {
         Tuple expected = new Tuple(x, y, z, w);
-        Tuple actual = RayMath.divide(tuple, mult);
+        Tuple actual = tuple.divide(mult);
         assertEquals(expected, actual);
     }
 
-    @Then("Magnitude equals {float}")
-    public void compareMagnitude(float mag) {
-        float actual = RayMath.magnitude(tuple);
+    @Then("Magnitude equals {double}")
+    public void compareMagnitude(double mag) {
+        double actual = tuple.magnitude();
         assertEquals(mag, actual);
     }
 
-    @Then("Normalize equals {float}, {float}, {float}")
-    public void compareNormalized(float x, float y, float z) {
+    @Then("Normalize equals {double}, {double}, {double}")
+    public void compareNormalized(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
-        Tuple actual = RayMath.normalize(tuple);
+        Tuple actual = tuple.normalize();
         assertEquals(expected, actual);
     }
 
-    @Then("Dot equals {float}")
-    public void dotEquals(float dot) {
-        float actual = RayMath.dotProduct(tuple, secondTuple);
+    @Then("Dot equals {double}")
+    public void dotEquals(double dot) {
+        double actual = tuple.dotProduct(secondTuple, "#.#####");
         assertEquals(dot, actual);
     }
 
-    @Then("Cross vectors {float}, {float}, {float}")
-    public void crossVectors(float x, float y, float z) {
+    @Then("Cross vectors {double}, {double}, {double}")
+    public void crossVectors(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
-        Tuple actual = RayMath.cross(tuple, secondTuple);
+        Tuple actual = tuple.cross(secondTuple);
         assertEquals(expected, actual);
     }
 
-    @Then("Reverse cross vectors {float}, {float}, {float}")
-    public void reverseCrossVectors(float x, float y, float z) {
+    @Then("Reverse cross vectors {double}, {double}, {double}")
+    public void reverseCrossVectors(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
-        Tuple actual = RayMath.cross(secondTuple, tuple);
+        Tuple actual = secondTuple.cross(tuple);
         assertEquals(expected, actual);
     }
 
-    @Then("Red is {float}")
-    public void redEquals(float expected) {
+    @Then("Red is {double}")
+    public void redEquals(double expected) {
         assertEquals(expected, tuple.getX());
     }
 
-    @Then("Green is {float}")
-    public void greenEquals(float expected) {
+    @Then("Green is {double}")
+    public void greenEquals(double expected) {
         assertEquals(expected, tuple.getY());
     }
 
-    @Then("Blue is {float}")
-    public void blueEquals(float expected) {
+    @Then("Blue is {double}")
+    public void blueEquals(double expected) {
         assertEquals(expected, tuple.getZ());
     }
 
-    @Then("Adding colors equals {float} {float} {float}")
-    public void addingColors(float red, float green, float blue) {
+    @Then("Adding colors equals {double} {double} {double}")
+    public void addingColors(double red, double green, double blue) {
         Tuple expected = new Color(red, green, blue);
-        Tuple actual = RayMath.add(tuple, secondTuple);
+        Tuple actual = tuple.add(secondTuple);
         assertEquals(expected, actual);
     }
 
-    @Then("Subtracting colors equals {float} {float} {float}")
-    public void subtractingColors(float red, float green, float blue) {
+    @Then("Subtracting colors equals {double} {double} {double}")
+    public void subtractingColors(double red, double green, double blue) {
         Tuple expected = new Color(red, green, blue);
-        Tuple actual = RayMath.subtract(tuple, secondTuple);
+        Tuple actual = tuple.subtract(secondTuple);
         assertEquals(expected, actual);
     }
 
-    @Then("Multiply tuples equals {float}, {float}, {float}, {float}")
-    public void multTuples(float x, float y, float z, float w) {
+    @Then("Multiply tuples equals {double}, {double}, {double}, {double}")
+    public void multTuples(double x, double y, double z, double w) {
         Tuple expected = new Tuple(x, y, z, w);
-        Tuple actual = RayMath.multiplyTuples(tuple, secondTuple);
+        Tuple actual = tuple.multiplyTuple(secondTuple);
         assertEquals(expected, actual);
     }
 
-    @Then("Reflected vector {float} {float} {float}")
-    public void reflected_vector(float x, float y, float z) {
+    @Then("Reflected vector {double} {double} {double}")
+    public void reflectedVector(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
         assertEquals(expected, reflectedVector);
     }

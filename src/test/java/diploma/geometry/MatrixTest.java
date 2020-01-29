@@ -1,7 +1,6 @@
 package diploma.geometry;
 
 import diploma.Creator;
-import diploma.math.MatrixMath;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -30,26 +29,26 @@ public class MatrixTest {
 
     @Given("Third matrix is multiplication")
     public void createThirdMatrix() {
-        thirdMatrix = MatrixMath.multiply(matrix, secondMatrix);
+        thirdMatrix = matrix.multiply(secondMatrix);
     }
 
     @Given("Submatrix {int} {int}")
     public void createSubmatrix(int row, int column) {
-        submatrix = MatrixMath.submatrix(matrix, row, column);
+        submatrix = matrix.submatrix(row, column);
     }
 
     @Given("Inverse matrix")
     public void inverseMatrix() {
-        secondMatrix = MatrixMath.inverse(matrix);
+        secondMatrix = matrix.inverse();
     }
 
-    @Given("Tuple {float} {float} {float} {float}")
-    public void createTuple(float x, float y, float z, float w) {
+    @Given("Tuple {double} {double} {double} {double}")
+    public void createTuple(double x, double y, double z, double w) {
         tuple = new Tuple(x, y, z, w);
     }
 
-    @Then("Matrix {int} {int} = {float}")
-    public void assertMatrixPointEquals(int row, int column, float expected) {
+    @Then("Matrix {int} {int} = {double}")
+    public void assertMatrixPointEquals(int row, int column, double expected) {
         assertEquals(expected, matrix.getData()[row][column]);
     }
 
@@ -66,72 +65,72 @@ public class MatrixTest {
     @Then("Multiply {int} x {int} matrix equals {string}")
     public void multiplyMatrix(int rows, int columns, String sequence) {
         Matrix expected = new Matrix(rows, columns, createMatrixSequence(rows, columns, sequence));
-            assertEquals(expected, MatrixMath.multiply(matrix, secondMatrix));
+            assertEquals(expected, matrix.multiply(secondMatrix));
     }
 
-    @Then("Multiply matrix by tuple equals {float} {float} {float} {float}")
-    public void multiplyByTiple(float x, float y, float z, float w) {
+    @Then("Multiply matrix by tuple equals {double} {double} {double} {double}")
+    public void multiplyByTiple(double x, double y, double z, double w) {
         Tuple expected = new Tuple(x, y, z, w);
-        Tuple actual = MatrixMath.multiplyByTuple(matrix, tuple);
+        Tuple actual = matrix.multiplyByTuple(tuple);
         assertEquals(expected, actual);
     }
 
     @Then("Multiply by identity matrix equals original")
     public void multiplyByIdentityMatrix() {
         Matrix identity = Creator.createIdentityMatrix();
-        assertEquals(matrix, MatrixMath.multiply(matrix, identity));
+        assertEquals(matrix, matrix.multiply(identity));
     }
 
     @Then("Multiply identity matrix by tuple equals tuple")
     public void multiplyIdentityMatrixByTuple() {
         Matrix identity = Creator.createIdentityMatrix();
-        assertEquals(tuple, MatrixMath.multiplyByTuple(identity, tuple));
+        assertEquals(tuple, identity.multiplyByTuple(tuple));
     }
 
     @Then("Transpose matrix equals {string}")
     public void transposeMatrix(String sequence) {
         Matrix expected = new Matrix(4, 4, createMatrixSequence(4, 4, sequence));
-        assertEquals(expected, MatrixMath.transpose(matrix));
+        assertEquals(expected, matrix.transpose());
     }
 
-    @Then("Determinant = {float}")
-    public void determine(float expected) {
-        assertEquals(expected, MatrixMath.getDeterminant(matrix));
+    @Then("Determinant = {double}")
+    public void determine(double expected) {
+        assertEquals(expected, matrix.getDeterminant());
     }
 
     @Then("Submatrix {int} {int} is following {int} x {int} {string}")
     public void submatrix(int delRow, int delColumn, int row, int column, String sequence) {
         Matrix expected = new Matrix(row, column, createMatrixSequence(row, column, sequence));
-        assertEquals(expected, MatrixMath.submatrix(matrix, delRow, delColumn));
+        assertEquals(expected, matrix.submatrix(delRow, delColumn));
     }
 
-    @Then("Determinant of submatrix = {float}")
-    public void determinantOfSubmatrix(float expected) {
-        assertEquals(expected, MatrixMath.getDeterminant(submatrix));
+    @Then("Determinant of submatrix = {double}")
+    public void determinantOfSubmatrix(double expected) {
+        assertEquals(expected, submatrix.getDeterminant());
     }
 
-    @Then("Minor of matrix {int} {int} {float}")
-    public void minorOfMatrix(int delRow, int delColumn, float expected) {
-        assertEquals(expected, MatrixMath.getMinor(matrix, delRow, delColumn));
+    @Then("Minor of matrix {int} {int} {double}")
+    public void minorOfMatrix(int delRow, int delColumn, double expected) {
+        assertEquals(expected, matrix.getMinor(delRow, delColumn));
     }
 
-    @Then("Cofactor of matrix {int} {int} {float}")
-    public void cofactorOfMatirx(int delRow, int delColumn, float expected) {
-        assertEquals(expected, MatrixMath.getCofactor(matrix, delRow, delColumn));
+    @Then("Cofactor of matrix {int} {int} {double}")
+    public void cofactorOfMatirx(int delRow, int delColumn, double expected) {
+        assertEquals(expected, matrix.getCofactor(delRow, delColumn));
     }
 
     @Then("Matrix is invertible")
     public void matrixIsInvertible() {
-        assertTrue(MatrixMath.isInvertible(matrix));
+        assertTrue(matrix.isInvertible());
     }
 
     @Then("Matrix is not invertible")
     public void matrixIsNotInvertible() {
-        assertFalse(MatrixMath.isInvertible(matrix));
+        assertFalse(matrix.isInvertible());
     }
 
-    @Then("Inverse {int} {int} = {float}")
-    public void inverseMatrixColRow(int row, int col, float expected)  {
+    @Then("Inverse {int} {int} = {double}")
+    public void inverseMatrixColRow(int row, int col, double expected)  {
         assertEquals(expected, secondMatrix.getData()[row][col]);
     }
 
@@ -143,15 +142,15 @@ public class MatrixTest {
 
     @Then("First matrix is third multiplied by inversed second")
     public void getFirstMatrixFromThirdAndInversedSecond() {
-        Matrix actual = MatrixMath.multiply(thirdMatrix, MatrixMath.inverse(secondMatrix));
+        Matrix actual = thirdMatrix.multiply(secondMatrix.inverse());
         assertEquals(matrix, actual);
     }
 
-    private float[] createMatrixSequence(int rows, int columns, String sequence) {
-        float[] parsedSequence = new float[rows * columns];
+    private double[] createMatrixSequence(int rows, int columns, String sequence) {
+        double[] parsedSequence = new double[rows * columns];
         int current = 0;
         for(String str : sequence.split(" ")) {
-            parsedSequence[current++] = Float.parseFloat(str);
+            parsedSequence[current++] = Double.parseDouble(str);
         }
         return parsedSequence;
     }

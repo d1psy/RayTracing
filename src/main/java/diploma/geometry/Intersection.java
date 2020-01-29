@@ -2,15 +2,15 @@ package diploma.geometry;
 
 public class Intersection implements Comparable<Intersection> {
 
-    private float time;
+    private double time;
     private GeometryObject geometryObject;
 
-    public Intersection(float time, GeometryObject geometryObject) {
+    public Intersection(double time, GeometryObject geometryObject) {
         this.time = time;
         this.geometryObject = geometryObject;
     }
 
-    public float getTime() {
+    public double getTime() {
         return time;
     }
 
@@ -18,7 +18,7 @@ public class Intersection implements Comparable<Intersection> {
         return geometryObject;
     }
 
-    public void setTime(float time) {
+    public void setTime(double time) {
         this.time = time;
     }
 
@@ -37,6 +37,6 @@ public class Intersection implements Comparable<Intersection> {
 
     @Override
     public int compareTo(Intersection inter) {
-        return Float.compare(getTime(), inter.getTime());
+        return Double.compare(getTime(), inter.getTime());
     }
 }

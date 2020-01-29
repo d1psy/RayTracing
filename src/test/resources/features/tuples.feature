@@ -134,16 +134,14 @@ Feature: Tuple
   Scenario: Multiply a color on color
     Given Color red=1.0 green=0.2 blue=0.4
     And Second color red=0.9 green=1.0 blue=0.1
-    Then Multiply tuples equals 0.9, 0.2, 0.040000003, 0.0
+    Then Multiply tuples equals 0.9, 0.2, 0.04, 0.0
 
-  @aaa
   Scenario: Reflecting a vector approaching at 45°
     Given Vector x=1.0, y=-1.0, z=0.0
     And Second vector x=0.0, y=1.0, z=0.0
     When Reflect vectors
     Then Reflected vector 1.0 1.0 0.0
 
-  @aaa
   Scenario: Reflecting a vector off a slanted surface
     Given Vector x=0.0, y=-1.0, z=0.0
     And Second vector x=0.70711, y=0.70711, z=0.0

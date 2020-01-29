@@ -4,12 +4,12 @@ public class Canvas {
 
     private int width;
     private int height;
-    private Color[][] colors;
+    private Tuple[][] colors;
 
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
-        colors = new Color[width][height];
+        colors = new Tuple[width][height];
         for(int i = 0; i< width; i++) {
             for(int j = 0; j < height; j++) {
                 colors[i][j] = new Color();
@@ -31,22 +31,21 @@ public class Canvas {
                         .append(getColorCode(colors[j][i].getY())).append(" ")
                         .append(getColorCode(colors[j][i].getZ())).append(" ");
             }
-//            sb.deleteCharAt(sb.length() - 1);
             sb.append(System.lineSeparator());
         }
         return sb.toString();
     }
 
-    public int getColorCode(float color) {
-        if (color > 1.0f) {
+    public int getColorCode(double color) {
+        if (color > 1.0) {
             return 255;
-        } else if (color < 0.0f) {
+        } else if (color < 0.0) {
             return 0;
         }
         return (int) (255 * color);
     }
 
-    public void writeToPixel(int width, int height, Color color) {
+    public void writeToPixel(int width, int height, Tuple color) {
         if ((width < this.width && !(width < 0)) && (height < this.height && !(height < 0))) {
             colors[width][height] = color;
         }
@@ -60,7 +59,7 @@ public class Canvas {
         return height;
     }
 
-    public Color[][] getColors() {
+    public Tuple[][] getColors() {
         return colors;
     }
 

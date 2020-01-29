@@ -8,7 +8,6 @@ import diploma.geometry.Sphere;
 import diploma.geometry.Tuple;
 import diploma.geometry.Vector;
 import diploma.math.IntersectionCollection;
-import diploma.math.RayMath;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,18 +26,18 @@ public class RayTest {
     private List<Intersection> intersections;
     private Matrix transformation;
 
-    @Given("Origin point {float} {float} {float}")
-    public void createOriginPoint(float x, float y, float z) {
+    @Given("Origin point {double} {double} {double}")
+    public void createOriginPoint(double x, double y, double z) {
         origin = new Point(x, y, z);
     }
 
-    @Given("Direction vector {float} {float} {float}")
-    public void createDirectionVector(float x, float y, float z) {
+    @Given("Direction vector {double} {double} {double}")
+    public void createDirectionVector(double x, double y, double z) {
         direction = new Vector(x, y, z);
     }
 
-    @Given("Create ray origin {float} {float} {float} direction {float} {float} {float}")
-    public void createRay(float oX, float oY, float oZ, float dX, float dY, float dZ) {
+    @Given("Create ray origin {double} {double} {double} direction {double} {double} {double}")
+    public void createRay(double oX, double oY, double oZ, double dX, double dY, double dZ) {
         origin = new Point(oX, oY, oZ);
         direction = new Vector(dX, dY, dZ);
         ray = new Ray(origin, direction);
@@ -49,13 +48,13 @@ public class RayTest {
         sphere = new Sphere(id);
     }
 
-    @Given("Translation matrix {float} {float} {float}")
-    public void createTranslationMatrix(float x, float y, float z) {
+    @Given("Translation matrix {double} {double} {double}")
+    public void createTranslationMatrix(double x, double y, double z) {
         transformation = Creator.createTranslationMatrix(x, y, z);
     }
 
-    @Given("Scaling matrix {float} {float} {float}")
-    public void createScalingMatrix(float x, float y, float z) {
+    @Given("Scaling matrix {double} {double} {double}")
+    public void createScalingMatrix(double x, double y, double z) {
         transformation = Creator.createScalingMatrix(x, y, z);
     }
 
@@ -66,12 +65,12 @@ public class RayTest {
 
     @When("Intersects")
     public void createIntersections() {
-        intersections = IntersectionCollection.getIntersection(ray, sphere);
+        intersections = ray.getIntersection(sphere);
     }
 
     @When("Transform ray")
     public void transformRay() {
-        transformedRay = RayMath.transform(ray, transformation);
+        transformedRay = ray.transform(transformation);
     }
 
     @Then("Ray origin is origin")
@@ -84,10 +83,10 @@ public class RayTest {
         assertEquals(direction, ray.getDirection());
     }
 
-    @Then("Position {float} is point {float} {float} {float}")
-    public void positionIsPoint(float time, float x, float y, float z) {
+    @Then("Position {double} is point {double} {double} {double}")
+    public void positionIsPoint(double time, double x, double y, double z) {
         Point expected = new Point(x, y, z);
-        assertEquals(expected, RayMath.position(ray, time));
+        assertEquals(expected, ray.position(time));
     }
 
     @Then("Count is {int}")
@@ -95,19 +94,19 @@ public class RayTest {
         assertEquals(count, intersections.size());
     }
 
-    @Then("Count {int} is {float}")
-    public void countAtPointerEquals(int pointer, float position) {
+    @Then("Count {int} is {double}")
+    public void countAtPointerEquals(int pointer, double position) {
         assertEquals(position, intersections.get(pointer).getTime());
     }
 
-    @Then("Transformed ray origin {float} {float} {float}")
-    public void transformedRayOrigin(float x, float y, float z) {
+    @Then("Transformed ray origin {double} {double} {double}")
+    public void transformedRayOrigin(double x, double y, double z) {
         Tuple expected = new Point(x, y, z);
         assertEquals(expected, transformedRay.getOrigin());
     }
 
-    @Then("Transformed ray direction {float} {float} {float}")
-    public void transformedRayDirection(float x, float y, float z) {
+    @Then("Transformed ray direction {double} {double} {double}")
+    public void transformedRayDirection(double x, double y, double z) {
         Tuple expected = new Vector(x, y, z);
         assertEquals(expected, transformedRay.getDirection());
     }

@@ -16,8 +16,8 @@ public class CanvasTest {
         canvas = new Canvas(width, height);
     }
 
-    @Given("Color to paint {float} {float} {float}")
-    public void createCanvas(float red, float green, float blue) {
+    @Given("Color to paint {double} {double} {double}")
+    public void createCanvas(double red, double green, double blue) {
         color = new Color(red, green, blue);
     }
 
@@ -46,10 +46,10 @@ public class CanvasTest {
         }
     }
 
-    @Then("Pixel at {int} {int} is {float} {float} {float}")
-    public void pixelEquls(int width, int height, float red, float green, float blue) {
+    @Then("Pixel at {int} {int} is {double} {double} {double}")
+    public void pixelEquls(int width, int height, double red, double green, double blue) {
         Color expected = new Color(red, green, blue);
-        Color actual = canvas.getColors()[width][height];
+        Tuple actual = canvas.getColors()[width][height];
         assertEquals(expected, actual);
     }
 }

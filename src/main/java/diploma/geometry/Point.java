@@ -2,7 +2,7 @@ package diploma.geometry;
 
 public class Point extends Tuple {
 
-    public Point(float x, float y, float z) {
-        super(x, y, z, 1.0f);
+    public Point(double x, double y, double z) {
+        super(x, y, z, 1.0);
     }
 }
