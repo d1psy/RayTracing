@@ -16,10 +16,17 @@ public class Computation {
     private Tuple eyeVector;
     private Tuple normalVector;
     private Tuple overPoint;
+    private Tuple underPoint;
     private boolean inside;
     private Tuple reflectVector;
     private double n1;
     private double n2;
+    private double nRatio;
+    private double cosI;
+    private double sin2t;
+    private double cosT;
+    private Tuple direction;
+    private Ray refractedRay;
 
     public Computation() {
 
@@ -43,6 +50,8 @@ public class Computation {
             inside = false;
         }
         overPoint = point.add(normalVector.multiply(0.00001));
+        underPoint = point.subtract(normalVector.multiply(0.00001));
+
         List<GeometryObject> containers = new ArrayList<>();
         for (Intersection inter : xs) {
             if (inter.equals(intersection)) {
@@ -66,6 +75,27 @@ public class Computation {
                 break;
             }
         }
+        nRatio = n1/n2;
+        cosI = eyeVector.dotProduct(normalVector, "#.#####");
+        sin2t = nRatio*nRatio * (1 - cosI * cosI);
+        cosT = Math.sqrt(1 - sin2t);
+        direction = normalVector.multiply(nRatio*cosI - cosT).subtract(eyeVector.multiply(nRatio));
+        refractedRay = new Ray(underPoint, direction);
+    }
+
+    public double schlick() {
+
+        if (n1 > n2) {
+            double n = n1 / n2;
+            sin2t = n * n * (1 - cosI * cosI);
+            if (sin2t > 1) {
+                return 1;
+            }
+            cosT = Math.sqrt(1 - sin2t);
+            cosI = cosT;
+        }
+        double r0 = (n1 - n2)/((n1 + n2)*(n1 + n2));
+        return r0 + (1 - r0) * ((1 - cosI)*(1 - cosI)*(1 - cosI)*(1 - cosI)*(1 - cosI));
     }
 
     public double getTime() {
@@ -146,5 +176,61 @@ public class Computation {
 
     public void setN2(double n2) {
         this.n2 = n2;
+    }
+
+    public Tuple getUnderPoint() {
+        return underPoint;
+    }
+
+    public void setUnderPoint(Tuple underPoint) {
+        this.underPoint = underPoint;
+    }
+
+    public double getnRatio() {
+        return nRatio;
+    }
+
+    public void setnRatio(double nRatio) {
+        this.nRatio = nRatio;
+    }
+
+    public double getCosI() {
+        return cosI;
+    }
+
+    public void setCosI(double cosI) {
+        this.cosI = cosI;
+    }
+
+    public double getSin2t() {
+        return sin2t;
+    }
+
+    public void setSin2t(double sin2t) {
+        this.sin2t = sin2t;
+    }
+
+    public double getCosT() {
+        return cosT;
+    }
+
+    public void setCosT(double cosT) {
+        this.cosT = cosT;
+    }
+
+    public Tuple getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Tuple direction) {
+        this.direction = direction;
+    }
+
+    public Ray getRefractedRay() {
+        return refractedRay;
+    }
+
+    public void setRefractedRay(Ray refractedRay) {
+        this.refractedRay = refractedRay;
     }
 }

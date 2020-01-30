@@ -5,6 +5,7 @@ import diploma.geometry.GeometryObject;
 import diploma.geometry.Intersection;
 import diploma.geometry.Point;
 import diploma.geometry.Tuple;
+import diploma.material.Material;
 import diploma.math.Computation;
 import diploma.math.IntersectionCollection;
 
@@ -43,7 +44,13 @@ public class World {
                 computation.getNormalVector(),
                 isShadowed(computation.getOverPoint()));
         Tuple reflected = reflectedColor(computation, remaining);
-        return surface.add(reflected);
+        Tuple refracted = refractedColor(computation, remaining);
+        Material material = computation.getObject().getMaterial();
+        if (material.getReflectivity() > 0 && material.getTransparency() > 0) {
+            double reflectance = computation.schlick();
+            return surface.add(reflected.multiply(reflectance)).add(reflected.multiply(1 - reflectance));
+        }
+        return surface.add(reflected).add(refracted);
     }
 
     public Tuple colorAt(Ray ray, int remaining) {
@@ -74,6 +81,16 @@ public class World {
         Tuple color = colorAt(ray, remaining - 1);
         return color.multiply(computation.getObject().getMaterial().getReflectivity());
     }
+
+    public Tuple refractedColor(Computation computation, int remaining) {
+
+        if (computation.getObject().getMaterial().getTransparency() == 0 || computation.getSin2t() > 1) {
+            return new Color(0, 0, 0);
+        }
+
+        return colorAt(computation.getRefractedRay(), remaining - 1).multiply(computation.getObject().getMaterial().getTransparency());
+    }
+
 
     public Light getLight() {
         return light;
