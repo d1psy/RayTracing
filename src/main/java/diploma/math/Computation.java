@@ -14,6 +14,7 @@ public class Computation {
     private Tuple normalVector;
     private Tuple overPoint;
     private boolean inside;
+    private Tuple reflectVector;
 
     public Computation() {
 
@@ -29,6 +30,7 @@ public class Computation {
         point = ray.position(time);
         eyeVector = ray.getDirection().negate();
         normalVector = object.normalAt(point);
+        reflectVector = ray.getDirection().reflect(normalVector);
         if (normalVector.dotProduct(eyeVector, "#.#####") < 0) {
             inside = true;
             normalVector = normalVector.negate();
@@ -92,5 +94,13 @@ public class Computation {
 
     public void setOverPoint(Tuple overPoint) {
         this.overPoint = overPoint;
+    }
+
+    public Tuple getReflectVector() {
+        return reflectVector;
+    }
+
+    public void setReflectVector(Tuple reflectVector) {
+        this.reflectVector = reflectVector;
     }
 }

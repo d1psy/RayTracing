@@ -137,12 +137,12 @@ public class WorldTest {
 
     @When("Shade hit")
     public void shadeHit() {
-        shadeHit = world.shadeHit(computation);
+        shadeHit = world.shadeHit(computation, 1);
     }
 
     @When("Color at")
     public void colorAt() {
-        colorAt = world.colorAt(ray);
+        colorAt = world.colorAt(ray, 1);
     }
 
     @Then("World contains light {double} {double} {double} {double} {double} {double}")

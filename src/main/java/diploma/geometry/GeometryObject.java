@@ -2,8 +2,11 @@ package diploma.geometry;
 
 import diploma.Creator;
 import diploma.material.Material;
+import diploma.ray.Ray;
 
-public class GeometryObject {
+import java.util.List;
+
+public abstract class GeometryObject {
 
     private int id;
     private Point position;
@@ -20,6 +23,8 @@ public class GeometryObject {
     public Matrix getTransformation() {
         return transformation;
     }
+
+    public abstract List<Intersection> getIntersection(Ray ray);
 
     public int getId() {
         return id;
@@ -42,12 +47,14 @@ public class GeometryObject {
     }
 
     public Tuple normalAt(Tuple point) {
-        Tuple objectPoint = getTransformation().inverse().multiplyByTuple(point);
-        Tuple objectNormal = objectPoint.subtract(getPosition());
-        Tuple worldNormal = getTransformation().inverse().transpose().multiplyByTuple(objectNormal);
-        worldNormal.setW(0.0);
+        Tuple localPoint = getTransformation().inverse().multiplyByTuple(point);
+        Tuple localNormal = localNormalAt(localPoint);
+        Tuple worldNormal = getTransformation().inverse().transpose().multiplyByTuple(localNormal);
+        worldNormal.setW(0);
         return worldNormal.normalize();
     }
+
+    public abstract Tuple localNormalAt(Tuple localPoint);
 
     @Override
     public boolean equals(Object obj) {

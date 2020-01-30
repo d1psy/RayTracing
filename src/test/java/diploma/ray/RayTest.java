@@ -65,7 +65,7 @@ public class RayTest {
 
     @When("Intersects")
     public void createIntersections() {
-        intersections = ray.getIntersection(sphere);
+        intersections = sphere.getIntersection(ray);
     }
 
     @When("Transform ray")

@@ -24,7 +24,6 @@ Feature: camera
     When Create camera
     Then Camera pixel size is 0.01
 
-  @aaa
   Scenario: Constructing a ray through the center of the canvas
     Given Hsize 201
     And Vsize 101
@@ -34,7 +33,6 @@ Feature: camera
     Then Camera ray origin 0 0 0
     And Camera ray direction 0 0 -1
 
-  @aaa
   Scenario: Constructing a ray through a corner of the canvas
     Given Hsize 201
     And Vsize 101
@@ -44,7 +42,6 @@ Feature: camera
     Then Camera ray origin 0 0 0
     And Camera ray direction 0.66519 0.33259 -0.66851
 
-  @aaa
   Scenario: Constructing a ray when the camera is transformed
     Given Hsize 201
     And Vsize 101

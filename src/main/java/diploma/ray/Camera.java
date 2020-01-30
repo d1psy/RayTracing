@@ -46,22 +46,11 @@ public class Camera {
         forEachIndex(
                 (x, y) -> {
                     Ray ray = rayForPixel(y, x);
-                    Tuple color = world.colorAt(ray);
+                    Tuple color = world.colorAt(ray, 10);
                     image.writeToPixel(y, x, color);
                 });
-//        for (int i = 0; i < getVsize() - 1; i++) {
-//            for (int j = 0; j < getHsize() - 1; j++) {
-//                long start = System.currentTimeMillis();
-//                Ray ray = rayForPixel(j, i);
-//                Tuple color = world.colorAt(ray);
-//                image.writeToPixel(j, i, color);
-//                long end = System.currentTimeMillis() - start;
-//                System.out.println("Render pixel - " + end/1000F);
-//            }
-//        }
         return image;
     }
-
 
     private IntStream xIndexStream() {
         return IntStream.range(0, vsize);

@@ -127,7 +127,7 @@ public class TranslationTest {
 
     @When("Intersection ray sphere")
     public void setIntersections() {
-        intersections = ray.getIntersection(sphere);
+        intersections = sphere.getIntersection(ray);
     }
 
     @Then("Transforming a point gives {double} {double} {double}")

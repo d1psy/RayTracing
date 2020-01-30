@@ -20,36 +20,6 @@ public class Ray {
         this.direction = direction;
     }
 
-    public List<Intersection> getIntersection(GeometryObject sphere) {
-        Ray ray2 = transform(sphere.getTransformation().inverse());
-        double a;
-        double b;
-        Tuple sphereToRay;
-        if (!sphere.getTransformation().equals(Creator.createIdentityMatrix())) {
-            sphereToRay = ray2.getOrigin().subtract(sphere.getPosition());
-            a = ray2.getDirection().dotProduct(ray2.getDirection(), "#.#####");
-            b = 2 * ray2.getDirection().dotProduct(sphereToRay, "#.#####");
-        } else {
-            sphereToRay = getOrigin().subtract(sphere.getPosition());
-            a = getDirection().dotProduct(getDirection(), "#.#####");
-            b = 2 * getDirection().dotProduct(sphereToRay, "#.#####");
-        }
-        double c = sphereToRay.dotProduct(sphereToRay, "#.#####") - 1;
-        double discriminant = b * b - 4 * a * c;
-        if (discriminant < 0) {
-            return Collections.emptyList();
-        } else {
-            List<Intersection> intersections = new ArrayList<>();
-            double first = ((-b - Math.sqrt(discriminant)) / (2 * a));
-            double second = ((-b + Math.sqrt(discriminant)) / (2 * a));
-            Intersection firstIntersection = new Intersection(first, sphere);
-            Intersection secondIntersection = new Intersection(second, sphere);
-            intersections.add(firstIntersection);
-            intersections.add(secondIntersection);
-            return intersections;
-        }
-    }
-
     public Ray transform(Matrix matrix) {
         Tuple origin = matrix.multiplyByTuple(getOrigin());
         Tuple direction = matrix.multiplyByTuple(getDirection());

@@ -11,6 +11,7 @@ public class Material {
     private double diffuse;
     private double specular;
     private double shininess;
+    private double reflectivity;
 
     public Material(Color color) {
         this.color = color;
@@ -18,6 +19,7 @@ public class Material {
         diffuse = 0.9;
         specular = 0.9;
         shininess = 200.0;
+        reflectivity = 0;
     }
 
     public Tuple lighting(Light light, Tuple position, Tuple eyeVector, Tuple normalVector, boolean inShadow) {
@@ -87,5 +89,13 @@ public class Material {
 
     public void setShininess(double shininess) {
         this.shininess = shininess;
+    }
+
+    public double getReflectivity() {
+        return reflectivity;
+    }
+
+    public void setReflectivity(double reflectivity) {
+        this.reflectivity = reflectivity;
     }
 }

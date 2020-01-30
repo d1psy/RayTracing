@@ -48,3 +48,11 @@ Feature: Intersection
     When List from four intersections
     And Hit intersections list
     Then Expected intersection 3
+
+  @aaa
+  Scenario: Precomputing the reflection vector
+    Given Create shape plane
+    And Create ray for plane point 0 1 -1 vector 0 -0.70711 0.70711
+    And Intersection 1.41421 shape
+    When Prepare computations for plane
+    Then Reflect is vector 0 0.70711 0.70711

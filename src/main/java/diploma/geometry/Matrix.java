@@ -5,6 +5,7 @@ public class Matrix {
     private int rows;
     private int columns;
     private double[][] data;
+    private Matrix inverse;
 
     public Matrix() {
 
@@ -92,6 +93,9 @@ public class Matrix {
     }
 
     public Matrix inverse() {
+        if (inverse != null) {
+            return inverse;
+        }
         if (isInvertible()) {
             double[][] data = new double[getRows()][getColumns()];
             double determinant = getDeterminant();
@@ -101,6 +105,7 @@ public class Matrix {
                     data[j][i] = cofactor/determinant;
                 }
             }
+            inverse = new Matrix(data);
             return new Matrix(data);
         }
         return null;
