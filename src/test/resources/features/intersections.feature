@@ -49,7 +49,6 @@ Feature: Intersection
     And Hit intersections list
     Then Expected intersection 3
 
-  @aaa
   Scenario: Precomputing the reflection vector
     Given Create shape plane
     And Create ray for plane point 0 1 -1 vector 0 -0.70711 0.70711

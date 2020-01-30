@@ -83,7 +83,7 @@ public class IntersectionTest {
 
     @When("Prepare computations for plane")
     public void prepareComputations() {
-        computation = new Computation(intersection, ray);
+        computation = new Computation(intersection, ray, intersections);
     }
 
     @Then("Intersection time {double}")

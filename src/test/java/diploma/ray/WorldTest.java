@@ -132,7 +132,7 @@ public class WorldTest {
 
     @When("Prepare computations")
     public void prepareComputations() {
-        computation = new Computation(intersection, ray);
+        computation = new Computation(intersection, ray, intersectionList);
     }
 
     @When("Shade hit")

@@ -1,6 +1,7 @@
 package diploma.geometry;
 
 import diploma.Creator;
+import diploma.material.Material;
 import diploma.ray.Ray;
 
 import java.util.ArrayList;
@@ -11,6 +12,14 @@ public class Sphere extends GeometryObject {
 
     public Sphere(int id) {
         super(id);
+        Material material = new Material(new Color(1, 1, 1));
+        material.setTransparency(1);
+        try {
+            material.setRefractiveIndex(1.5);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setMaterial(material);
     }
 
     @Override

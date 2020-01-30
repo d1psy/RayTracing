@@ -52,7 +52,7 @@ public class World {
         if (intersection == null) {
             return new Color(0, 0, 0);
         }
-        Computation computation = new Computation(intersection, ray);
+        Computation computation = new Computation(intersection, ray, intersections);
         return shadeHit(computation, remaining);
     }
 

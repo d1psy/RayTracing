@@ -12,6 +12,8 @@ public class Material {
     private double specular;
     private double shininess;
     private double reflectivity;
+    private double transparency;
+    private double refractiveIndex;
 
     public Material(Color color) {
         this.color = color;
@@ -20,6 +22,8 @@ public class Material {
         specular = 0.9;
         shininess = 200.0;
         reflectivity = 0;
+        transparency = 0;
+        refractiveIndex = 1;
     }
 
     public Tuple lighting(Light light, Tuple position, Tuple eyeVector, Tuple normalVector, boolean inShadow) {
@@ -97,5 +101,24 @@ public class Material {
 
     public void setReflectivity(double reflectivity) {
         this.reflectivity = reflectivity;
+    }
+
+    public double getTransparency() {
+        return transparency;
+    }
+
+    public void setTransparency(double transparency) {
+        this.transparency = transparency;
+    }
+
+    public double getRefractiveIndex() {
+        return refractiveIndex;
+    }
+
+    public void setRefractiveIndex(double refractiveIndex) throws Exception {
+        if (refractiveIndex < 1) {
+            throw new Exception("Refractive index can't be less than 1");
+        }
+        this.refractiveIndex = refractiveIndex;
     }
 }

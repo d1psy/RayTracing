@@ -5,6 +5,9 @@ import diploma.geometry.Intersection;
 import diploma.geometry.Tuple;
 import diploma.ray.Ray;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Computation {
 
     private double time;
@@ -15,16 +18,18 @@ public class Computation {
     private Tuple overPoint;
     private boolean inside;
     private Tuple reflectVector;
+    private double n1;
+    private double n2;
 
     public Computation() {
 
     }
 
-    public Computation(Intersection intersection, Ray ray) {
-        prepareComputations(intersection, ray);
+    public Computation(Intersection intersection, Ray ray, List<Intersection> xs) {
+        prepareComputations(intersection, ray, xs);
     }
 
-    public void prepareComputations(Intersection intersection, Ray ray) {
+    public void prepareComputations(Intersection intersection, Ray ray, List<Intersection> xs) {
         time = intersection.getTime();
         object = intersection.getGeometryObject();
         point = ray.position(time);
@@ -38,6 +43,29 @@ public class Computation {
             inside = false;
         }
         overPoint = point.add(normalVector.multiply(0.00001));
+        List<GeometryObject> containers = new ArrayList<>();
+        for (Intersection inter : xs) {
+            if (inter.equals(intersection)) {
+                if (containers.isEmpty()) {
+                    n1 = 1;
+                } else {
+                    n1 = containers.get(containers.size() - 1).getMaterial().getRefractiveIndex();
+                }
+            }
+            if (containers.contains(inter.getGeometryObject())) {
+                containers.remove(inter.getGeometryObject());
+            } else {
+                containers.add(inter.getGeometryObject());
+            }
+            if (inter.equals(intersection)) {
+                if (containers.isEmpty()) {
+                    n2 = 1;
+                } else {
+                    n2 = containers.get(containers.size() - 1).getMaterial().getRefractiveIndex();
+                }
+                break;
+            }
+        }
     }
 
     public double getTime() {
@@ -102,5 +130,21 @@ public class Computation {
 
     public void setReflectVector(Tuple reflectVector) {
         this.reflectVector = reflectVector;
+    }
+
+    public double getN1() {
+        return n1;
+    }
+
+    public void setN1(double n1) {
+        this.n1 = n1;
+    }
+
+    public double getN2() {
+        return n2;
+    }
+
+    public void setN2(double n2) {
+        this.n2 = n2;
     }
 }
